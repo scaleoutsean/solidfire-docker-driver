@@ -89,20 +89,21 @@ iSCSI packages installed on each Docker node.
   ```
 
 ## Driver Installation
-### Download the linux binary from Github Release
+### Download the Linux binary from Github Release
 ```
 wget https://github.com/solidfire/solidfire-docker-driver/releases/download/v1.1/solidfire-docker-driver
 
-# move to a location in the bin path
+### Move the file to a location in the bin path, adjust the ownership and permissions if necessary
 sudo mv solidfire-docker-driver /usr/local/bin
 sudo chown root:root /usr/local/bin/solidfire-docker-driver
+sudo chmod 755 /usr/local/bin/solidfire-docker-driver
 ```
 ### Build from source yourself
   ```
   go get -u github.com/solidfire/solidfire-docker-driver
   ```
 
-** There are known issues with docker/go-plugins-helpers not building against the latest Docker version.  You can view the Issue on GitHub here:  https://github.com/docker/go-plugins-helpers/issues/46
+** There are known issues with docker/go-plugins-helpers not building against the latest Docker version.  You can view the Issue on GitHub here: https://github.com/docker/go-plugins-helpers/issues/46
 
 SolidFire Github page [SolidFire Github](https://github.com/solidfire)
 
@@ -129,20 +130,21 @@ For example in your .bashrc set the following alias after setting up PATH:
 During startup of the SolidFire Docker service, the plugin obtains its setting
 information from a provided config file.  The config file can be specified via
 the command line on startup, and also by default the service will attempt to
-find a config at the default location:
+find a config at the default location (execute `mkdir /var/lib/solidfire` if the 
+parent directory does not exist):
   ```
   /var/lib/solidfire/solidfire.json
   ```
 
 The SolidFire config file is a minimal config file that includes basic
-information abou the SolidFire cluster to use, and includes specification of a
+information about the SolidFire cluster to use, and includes specification of a
 tenant account to create and (or) use on the SolidFire cluster.  It also
 includes directives to specify where volumes should be mounted on the Docker
 host.  Here's an example solidfire.json config file:
 
   ```
   {
-    "Endpoint": "https://admin:admin@192.168.160.3/json-rpc/7.0",
+    "Endpoint": "https://admin:admin@192.168.160.3/json-rpc/8.0",
     "SVIP": "10.10.64.3:3260",
     "TenantName": "docker",
     "DefaultVolSz": 1,
@@ -170,6 +172,8 @@ solidfire-docker-driver daemon so that it can accept requests from Docker.
   ```
   sudo solidfire-docker-driver daemon start -v
   ```
+
+If binary 
 
 ## Usage Examples
 Now that the daemon is running, you're ready to issue calls via the Docker
